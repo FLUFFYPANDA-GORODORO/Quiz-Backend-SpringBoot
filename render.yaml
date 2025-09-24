@@ -1,0 +1,31 @@
+databases:
+  - name: quiz-db
+    plan: free
+
+services:
+  - type: web
+    name: quiz-backend
+    runtime: docker        # ✅ required for Docker services
+    plan: free
+    dockerfilePath: Dockerfile
+    envVars:
+      - key: SPRING_DATASOURCE_URL
+        fromDatabase:
+          name: quiz-db
+          property: connectionString
+      - key: SPRING_DATASOURCE_USERNAME
+        fromDatabase:
+          name: quiz-db
+          property: user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromDatabase:
+          name: quiz-db
+          property: password
+      - key: JWT_SECRET
+        value: 0123456789ABCDEF0123456789ABCDEF
+      - key: JWT_EXPIRATION
+        value: 86400000
+      - key: FRONTEND_URL
+        value: https://your-frontend.onrender.com
+      - key: BACKEND_URL
+        value: https://quiz-backend.onrender.com
